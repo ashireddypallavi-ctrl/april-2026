@@ -1,0 +1,45 @@
+class Robot:
+    def __init__(self, w: int, h: int):
+        self.w, self.h = w, h
+        self.per = 2 * (w + h) - 4
+        self.pos = 0
+        self.moved = False
+
+    def step(self, n: int) -> None:
+        self.pos = (self.pos + n) % self.per
+        self.moved = True
+
+    def getPos(self) -> list:
+        p = self.pos
+        w, h = self.w, self.h
+
+        if p < w:
+            return [p, 0]
+        p -= w
+
+        if p < h - 1:
+            return [w - 1, p + 1]
+        p -= (h - 1)
+
+        if p < w - 1:
+            return [w - 2 - p, h - 1]
+        p -= (w - 1)
+
+        return [0, h - 2 - p]
+
+    def getDir(self) -> str:
+        if not self.moved:
+            return "East"
+
+        p = self.pos
+        w, h = self.w, self.h
+
+        if p == 0:
+            return "South"
+        if p < w:
+            return "East"
+        if p < w + h - 1:
+            return "North"
+        if p < w + h - 1 + w - 1:
+            return "West"
+        return "South"
